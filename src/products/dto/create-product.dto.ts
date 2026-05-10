@@ -17,20 +17,20 @@ export class CreateProductDto {
     @IsInt()
     @Min(0)
     public stock: number;
-    @IsString()
-    @IsIn(['Smartphones', 'Laptops', 'Tablets', 'Audio', 'Accessories'])
-    public category: string;
+    @IsInt()
+    @IsPositive()
+    public categoryId: number;
     constructor(
         name: string,
         description: string,
         price: number,
         stock: number,
-        category: string,
+        categoryId: number,
     ) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.stock = stock;
-        this.category = category;
+        this.categoryId = categoryId;
     }
 }
