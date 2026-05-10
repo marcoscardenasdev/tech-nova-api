@@ -1,20 +1,29 @@
-import { Injectable, Logger, NotFoundException, OnModuleInit } from '@nestjs/common';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+
+import { CreateProductDto, UpdateProductDto } from './dto';
 import { PaginationDto } from '../common/pagination.dto';
 import { PrismaService } from '../prisma.service';
+import { CategoriesService } from '../categories/categories.service';
 
 @Injectable()
 export class ProductsService {
 
   constructor(
     private readonly prismaService: PrismaService,
+    private readonly categoriesService: CategoriesService,
   ) { 
   }
 
   async create(createProductDto: CreateProductDto) {
+
+    const { categoryId } = createProductDto;
+    
+    const category = await this.categoriesService.findOne(categoryId);
     const product = await this.prismaService.product.create({
-      data: createProductDto,
+      data: {
+        ...createProductDto,
+        categoryId
+      }
     });
     return product;
   }
@@ -25,6 +34,12 @@ export class ProductsService {
     const products = await this.prismaService.product.findMany({
       take: limit,
       skip: (page - 1) * limit,
+      omit: {
+        categoryId: true,
+      },
+      include: {
+        category: true,
+      }
     });
 
     const total = await this.prismaService.product.count();
@@ -43,6 +58,12 @@ export class ProductsService {
   async findOne(id: number) {
     const product = await this.prismaService.product.findUnique({
       where: { id },
+      omit: {
+        categoryId: true,
+      },
+      include: {
+        category: true,
+      }
     });
 
     if ( !product ) {
