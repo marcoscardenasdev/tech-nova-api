@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsIn, IsInt, IsNumber, IsOptional, IsPositive, IsString, MaxLength, Min, MinLength } from "class-validator";
+import { IsArray, IsIn, IsInt, IsNumber, IsOptional, IsPositive, IsString, MaxLength, Min, MinLength } from "class-validator";
 
 export class CreateProductDto {
 
@@ -20,17 +20,22 @@ export class CreateProductDto {
     @IsInt()
     @IsPositive()
     public categoryId: number;
+    @IsString({ each: true })
+    @IsArray()
+    public images: string[];
     constructor(
         name: string,
         description: string,
         price: number,
         stock: number,
         categoryId: number,
+        images: string[],
     ) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.stock = stock;
         this.categoryId = categoryId;
+        this.images = images;
     }
 }

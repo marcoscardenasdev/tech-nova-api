@@ -16,13 +16,18 @@ export class ProductsService {
 
   async create(createProductDto: CreateProductDto) {
 
-    const { categoryId } = createProductDto;
+    const { categoryId, images } = createProductDto;
     
-    const category = await this.categoriesService.findOne(categoryId);
+    // Validar que la categoría exista
+    await this.categoriesService.findOne(categoryId);
+
     const product = await this.prismaService.product.create({
       data: {
         ...createProductDto,
-        categoryId
+        categoryId,
+        images: {
+      create: images.map( url => ({ url }) ),
+    },
       }
     });
     return product;
@@ -79,7 +84,9 @@ export class ProductsService {
     const product = await this.prismaService.product.update({
       where: { id },
       data: {
-        ...updateProductDto
+        ...updateProductDto,
+        images: {
+        }
       },
     });
 
