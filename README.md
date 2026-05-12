@@ -10,7 +10,11 @@
 npm install
 ```
 3. Renombrar el archivo ```.env.template``` a ```.env``` y configurar las variables de entorno
-4. Ejecutar el proyecto
+4. Generar los modelos de prisma
+```
+npx prisma generate
+```
+5. Ejecutar el proyecto
 ```
 npm run start:dev
 ```
