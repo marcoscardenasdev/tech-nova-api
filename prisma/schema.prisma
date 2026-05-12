@@ -33,3 +33,11 @@ model ProductImage {
   productId Int
   product   Product @relation(fields: [productId], references: [id])
 }
+
+model User {
+  id String @id @default(uuid())
+  fullName String
+  email String @unique
+  password String
+  rol String @default("CLIENT")
+}
