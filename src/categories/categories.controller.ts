@@ -1,14 +1,16 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe } from '@nestjs/common';
 
 import { CategoriesService } from './categories.service';
-import { CreateCategoryDto, UpdateCategoryDto } from './dto';
+import { CreateCategoryDto } from './dto';
 import { PaginationDto } from '../common/pagination.dto';
+import { Auth } from '../auth/decorators';
 
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Post()
+  @Auth( 'ADMIN' )
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoriesService.create(createCategoryDto);
   }
@@ -31,6 +33,7 @@ export class CategoriesController {
   }*/
 
   @Delete(':id')
+  @Auth( 'ADMIN' )
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.categoriesService.remove(id);
   }

@@ -5,12 +5,14 @@ import type { Response } from 'express';
 
 import { FilesService } from './files.service';
 import { fileFilter, fileName } from './helpers';
+import { Auth } from '../auth/decorators';
 
 @Controller('files')
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
   @Post('product')
+  @Auth( 'ADMIN' )
   @UseInterceptors(FileInterceptor('file', {
     fileFilter: fileFilter,
     storage: diskStorage({

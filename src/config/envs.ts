@@ -5,12 +5,14 @@ interface EnvVars {
   PORT: number;
   DATABASE_URL: string;
   HOST_API: string;
+  JWT_SECRET: string;
 }
 
 const envsSchema = joi.object({
   PORT: joi.number().required(),
   DATABASE_URL: joi.string().required(),
   HOST_API: joi.string().required(),
+  JWT_SECRET: joi.string().required(),
 })
 .unknown(true);
 
@@ -28,4 +30,5 @@ export const envs = {
   port: envVars.PORT,
   databaseUrl: envVars.DATABASE_URL,
   hostAPI: envVars.HOST_API,
+  jwtSecret: envVars.JWT_SECRET,
 }
